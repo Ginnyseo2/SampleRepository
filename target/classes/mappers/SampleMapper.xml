@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.SampleMapper">
+	<select id="selectSample" resultType="Map">
+        SELECT USERNAME
+           	  ,EMAIL
+           	  ,DELYN
+          FROM T_USER
+         WHERE 1=1
+           AND DELYN = FALSE
+           AND ROWNUM=1
+    </select>
+    
+    <select id="selectSampleList" parameterType="Map" resultType="Map">
+      <if test="pageStart != null and pageStart != '' and pageSize != null and pageSize != ''">   
+    	<include refid="PagingMapper.header"/>
+      </if>
+        SELECT USERNAME
+           	  ,EMAIL
+           	  ,DELYN
+          FROM T_USER
+         WHERE 1=1
+           AND DELYN = FALSE
+      <if test="pageStart != null and pageStart != '' and pageSize != null and pageSize != ''">   
+    	<include refid="PagingMapper.footer"/>
+      </if>
+    </select>
+    
+    <insert id="insertSample" parameterType="Map">
+        INSERT INTO T_USER
+          (
+          	USERNAME
+           ,EMAIL
+           ,DELYN
+          )
+      VALUES 
+      	  (
+      	    #{username}
+      	   ,#{email}
+      	   ,FALSE
+      	  )
+          
+    </insert>
+    
+    <update id="updateSample" parameterType="Map">
+        UPDATE T_USER
+           SET EMAIL    = #{email}
+         WHERE 1=1
+         <if test="username != null and username != ''">
+           AND USERNAME = #{username}
+         </if>
+           AND DELYN = FALSE
+    </update>
+    
+    <update id="deleteSample" parameterType="Map">
+        UPDATE T_USER
+           SET DELYN = TRUE
+         WHERE 1=1
+      <if test="username != null and username != ''">
+           AND USERNAME = #{username}
+      </if>
+           AND DELYN = FALSE
+    </update>
+
+</mapper>

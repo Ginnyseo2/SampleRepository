@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PagingMapper">
+	<sql id="header">
+        SELECT PAGING.*
+         FROM (
+         		SELECT T.*
+         		, ROW_NUMBER() OVER() AS ROW_NUM
+         		, COUNT(*) OVER() AS TOT_CNT
+         	FROM (
+    </sql>
+    
+    <sql id="footer">
+        )	T
+       WHERE 1=1
+       ) 	PAGING
+       WHERE PAGING.ROW_NUM <![CDATA[ > ]]> (CAST(#{pageStart} AS NUMERIC) - 1) * (CAST(#{pageSize} AS NUMERIC))
+         AND PAGING.ROW_NUM <![CDATA[ <= ]]> CAST(#{pageStart} AS NUMERIC) * CAST(#{pageSize} AS NUMERIC)
+    </sql>
+    
+
+
+</mapper>
